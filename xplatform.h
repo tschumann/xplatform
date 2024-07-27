@@ -7,6 +7,10 @@
 #ifndef __XPLATFORM_H__
 #define __XPLATFORM_H__
 
+#ifndef __cplusplus
+#define constexpr
+#endif // __cplusplus
+
 #if (_WIN32 || _WIN64) && _MSC_VER
 
 // from sysexits.h
@@ -52,11 +56,17 @@ inline int strcasecmp( const char *string1, const char *string2 )
  */
 constexpr inline long __builtin_expect( long exp, long c )
 {
-	if( exp == c ) [[likely]]
+	if( exp == c )
+#ifdef __cplusplus
+		[[likely]]
+#endif // __cplusplus
 	{
 		return exp;
 	}
-	else [[unlikely]]
+	else
+#ifdef __cplusplus
+		[[unlikely]]
+#endif // __cplusplus
 	{
 		return exp;
 	}
